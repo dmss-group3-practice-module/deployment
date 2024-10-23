@@ -33,7 +33,14 @@ docker-compose down
 
 [Artillery](https://artillery.io/) is used as the tool for load testing. Ensure that Artillery is [installed](https://www.artillery.io/docs/get-started/get-artillery) before running the script below.
 
+
 ```sh
+# install
+npm install -g artillery  
+
+# notice: make sure plug-in and artillery in same env if you want to add plug-in, (both global or both local), otherwise it will be error. 
+
+# starts up artillery
 artillery run load-test.yml
 ```
 

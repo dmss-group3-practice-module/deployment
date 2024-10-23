@@ -265,3 +265,91 @@ INSERT INTO recipe_review (recipe_id, creator_id, rating, create_datetime, updat
     (14, 10, 4.5, NOW(), NOW(), 'Who needs meat? This veggie pizza is amazing!'),  
     (14, 1, 3.5, NOW(), NOW(), 'Toppings were good, but the crust was a bit soggy.'),  
     (14, 2, 4.0, NOW(), NOW(), 'Added some red pepper flakes. Perfect kick!');
+
+
+-- for table user_account  -- 
+
+DO $$
+BEGIN
+    FOR i IN 1..30 LOOP
+        INSERT INTO user_account (id, name, password, display_name, email, status, role, create_datetime, update_datetime)
+        VALUES 
+        (	
+        	i,
+            'user_' || i, 
+            'password_' || i, 
+            'Display Name ' || i, 
+            'user' || i || '@example.com', 
+            i % 2 + 1, 
+            CASE WHEN i % 4 = 0 THEN 0 ELSE 1 END, 
+            NOW(), 
+            NOW()
+        )
+        ON CONFLICT (id) 
+        DO UPDATE SET 
+            name = EXCLUDED.name,
+            password = EXCLUDED.password,
+            display_name = EXCLUDED.display_name,
+            status = EXCLUDED.status,
+            role = EXCLUDED.role,
+            update_datetime = NOW();
+    END LOOP;
+END $$;
+
+
+-- for table user_ingredients  -- 
+
+DO $$
+BEGIN
+    FOR i IN 1..50 LOOP
+        INSERT INTO user_ingredients (id, user_id, name, quantity, uom, expiry_date, create_datetime, update_datetime)
+        VALUES 
+        (
+        	i,
+            (i % 10) + 1,  -- user_id between 1 and 10
+            'Ingredient_' || (i % 11), 
+            (i * 10) % 100 + 10,  -- quantity between 10 and 100
+            CASE WHEN i % 2 = 0 THEN 'kg' ELSE 'g' END, 
+            NOW() + INTERVAL '1 month' * (i % 12), 
+            NOW(), 
+            NOW()
+        )
+        ON CONFLICT (id) 
+        DO UPDATE SET 
+            quantity = EXCLUDED.quantity,
+            uom = EXCLUDED.uom,
+            expiry_date = EXCLUDED.expiry_date,
+            update_datetime = NOW();
+    END LOOP;
+END $$;
+
+ 
+-- for table recipe -- 
+DO $$
+BEGIN
+    FOR i IN 1..30 LOOP
+        INSERT INTO recipe (id, creator_id, name, image, description, cookingTimeInSec, difficultyLevel, rating, status, create_datetime, update_datetime)
+        VALUES 
+        (   	
+        	i,
+            (i % 10) + 1,  -- creator_id between 1 and 10
+            'Recipe_' || i, 
+            '/images/recipe_' || i || '.jpg', 
+            'This is a description for Recipe_' || i, 
+            (i * 10) % 3600 + 600,  -- cooking time between 600 and 3600 seconds
+            i % 3 + 1, 
+            (i % 5) + 1.0,  -- rating between 1.0 and 5.0
+            i % 3, 
+            NOW(), 
+            NOW()
+        )
+        ON CONFLICT (id) 
+        DO UPDATE SET 
+            image = EXCLUDED.image,
+            description = EXCLUDED.description,
+            cookingTimeInSec = EXCLUDED.cookingTimeInSec,
+            difficultyLevel = EXCLUDED.difficultyLevel,
+            rating = EXCLUDED.rating,
+            update_datetime = NOW();
+    END LOOP;
+END $$;
