@@ -1,11 +1,11 @@
 version: '3.8'
 
 services:
-  backend_authenticate:
+  backend:
     image: feats-backend:latest
-    container_name: feats-backend-authenticate
+    container_name: feats-backend
     environment:
-      SPRING_PROFILES_ACTIVE: docker,authenticate
+      SPRING_PROFILES_ACTIVE: docker
     command: ./gradlew bootRun
     volumes:
       - .:/home/gradle/project
@@ -17,61 +17,77 @@ services:
     depends_on:
       - db
 
-  backend_ingredient:
-    image: feats-backend:latest
-    container_name: feats-backend-ingredient
-    environment:
-      SPRING_PROFILES_ACTIVE: docker,ingredient
-    command: ./gradlew bootRun
-    volumes:
-      - .:/home/gradle/project
-    working_dir: /home/gradle/project
-    ports:
-      - "8090:8089"
-    env_file:
-      - .env
-    depends_on:
-      - db
+  # backend_authenticate:
+  #   image: feats-backend:latest
+  #   container_name: feats-backend-authenticate
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: docker,authenticate
+  #   command: ./gradlew bootRun
+  #   volumes:
+  #     - .:/home/gradle/project
+  #   working_dir: /home/gradle/project
+  #   ports:
+  #     - "8089:8089"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - db
 
-  backend_recipe:
-    image: feats-backend:latest
-    container_name: feats-backend-recipe
-    environment:
-      SPRING_PROFILES_ACTIVE: docker,recipe
-    command: ./gradlew bootRun
-    volumes:
-      - .:/home/gradle/project
-    working_dir: /home/gradle/project
-    ports:
-      - "8091:8089"
-    env_file:
-      - .env
-    depends_on:
-      - db
+  # backend_ingredient:
+  #   image: feats-backend:latest
+  #   container_name: feats-backend-ingredient
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: docker,ingredient
+  #   command: ./gradlew bootRun
+  #   volumes:
+  #     - .:/home/gradle/project
+  #   working_dir: /home/gradle/project
+  #   ports:
+  #     - "8090:8089"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - db
 
-  backend_user:
-    image: feats-backend:latest
-    container_name: feats-backend-user
-    environment:
-      SPRING_PROFILES_ACTIVE: docker,user
-    command: ./gradlew bootRun
-    volumes:
-      - .:/home/gradle/project
-    working_dir: /home/gradle/project
-    ports:
-      - "8092:8089"
-    env_file:
-      - .env
-    depends_on:
-      - db
+  # backend_recipe:
+  #   image: feats-backend:latest
+  #   container_name: feats-backend-recipe
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: docker,recipe
+  #   command: ./gradlew bootRun
+  #   volumes:
+  #     - .:/home/gradle/project
+  #   working_dir: /home/gradle/project
+  #   ports:
+  #     - "8091:8089"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - db
 
-  frontend:
-    image: feats-frontend:latest
-    container_name: feats-frontend
-    ports:
-      - "3000:80"
-    depends_on:
-      - backend_authenticate
+  # backend_user:
+  #   image: feats-backend:latest
+  #   container_name: feats-backend-user
+  #   environment:
+  #     SPRING_PROFILES_ACTIVE: docker,user
+  #   command: ./gradlew bootRun
+  #   volumes:
+  #     - .:/home/gradle/project
+  #   working_dir: /home/gradle/project
+  #   ports:
+  #     - "8092:8089"
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - db
+
+  # frontend:
+  #   image: feats-frontend:latest
+  #   container_name: feats-frontend
+  #   ports:
+  #     - "3000:80"
+  #   depends_on:
+  #     - backend_authenticate
 
   db:
     image: postgres:latest
